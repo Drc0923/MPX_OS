@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MPX OS - Programmer's Manual</title>
+	<link rel="stylesheet" type="text/css" href="manual.css">
+</head>
+<body>
+<div class="header">
+	<h1>MPX Operating System</h1>
+	<h2>Programmer's Manual</h2>
+</div>
+
+<div class="container">
+	<div class="sidebar">
+    	<h2>Table of Contents</h2>
+    	<ul>
+        	<li><a href="#introduction">Introduction</a></li>
+        	<li><a href="#command-handler">Command Handler</a></li>
+        	<li><a href="#serial-poller">Serial Poller</a></li>
+        	<li><a href="#help">Help</a></li>
+        	<li><a href="#version">Version</a></li>
+        	<li><a href="#yield">Yield</a></li>
+        	<li><a href="#alarm">Alarm</a></li>
+        	<li><a href="#time">Time</a></li>
+        	<li><a href="#pcbuser">PCB User</a></li>
+        	<li><a href="#loadR3">Load R3</a></li>
+        	<li><a href="#syscall">Sys Call</a></li>
+        	<li><a href="#serial-io">Serial IO</a></li>
+    	</ul>
+	</div>
+
+	<div class="main-content">
+    	<!-- Introduction -->
+    	<section id="introduction">
+        	<h2>Introduction</h2>
+        	<p>This manual provides detailed documentation of the MPX Operating System, aiming to aid developers in understanding, maintaining, and extending the system.</p>
+    	</section>
+
+    	<!-- Command Handler -->
+    	<section id="command-handler">
+        	<h2>Command Handler</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void comhand(void)</dt>
+            	<dd>Main loop for the command-line interface. Initializes the user interface and waits for user input to process commands. Does not take any parameters.</dd>
+
+            	<dt>static void process_command(const char *command)</dt>
+            	<dd>Accepts a command from the user, given as a string, and invokes the appropriate function to handle that command. The function does not return any values.</dd>
+
+            	<dt>void rtrim(char *str)</dt>
+            	<dd>Removes trailing white spaces from the input string. Takes a pointer to a character array as its parameter and modifies the array in-place. Does not return any value.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+
+    	<!-- Serial Poller -->
+    	<section id="serial-poller">
+        	<h2>Serial Poller</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>int serial_poll(device dev, char *buffer, size_t len)</dt>
+            	<dd>Reads from the serial device into a buffer of specified length. Returns the number of bytes read on success, and -1 on failure. Parameters include device ID, buffer to read into, and length of the buffer.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<dl>
+            	<dt>typedef int device</dt>
+            	<dd>An integer type that represents the device ID, such as COM1.</dd>
+
+            	<dt>size_t</dt>
+            	<dd>Standard C library type that represents the size of objects in bytes.</dd>
+        	</dl>
+    	</section>
+   	 
+    	<!-- Help -->
+    	<section id="help">
+        	<h2>Help</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void help(void)</dt>
+            	<dd>Displays each of the functions that a user can call and provides a name, the arguments and a description for each function. Takes in no parameters and returns no parameters is just used to display a help message to the screen</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+   	 
+    	<!-- Version -->
+    	<section id="version">
+        	<h2>Version</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void version(void)</dt>
+            	<dd>Displays the current working version of the MPX compiler. The current version is expressed in the form of R#.? where # stands for the current module being worked on and ? stands for the numbered update to the development branch. For example version R3.2 would represent module 3 being currently worked on, and the second major commit to the Development branch.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+   	 
+    	<!-- Yield -->
+    	<section id="yield">
+        	<h2>Yield</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void yield(void)</dt>
+            	<dd>When this method is called the current process that is being exectuted gets put into IDLE, meaning the process saves it's current state and gets pushed to the back of the queue.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+   	 
+    	<!-- Alarm -->
+    	<section id="alarm">
+        	<h2>Alarm</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void alarm(struct time trigger, char* msg)</dt>
+            	<dd>This method gets called by the other method in the related file get_alarm. The variables that are passed in are from the user from the get_alarm method. This method works by taking that time given by the user and checking it against the current system clock. If the current time is past or equal to the time given by the user, the alarm will trigger and display the message the user entered.</dd>
+           	 
+            	<dt>void get_alarm(void)</dt>
+            	<dd>This method is the one that directly gets called from the command handler. The user is prompted to enter a time in the form hh:mm:ss (military time 0-23 hours) and a message. Once the user enters these values the time is checked to make sure it is a valid time and if so the method calls the alarm message described above, otherwise it exits the process.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+   	 
+    	<!-- Time -->
+    	<section id="time">
+        	<h2>Time</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void get_time(void)</dt>
+            	<dd>Will get the current time on the operating system and display it to the user. Does not take any parameters or return any values.</dd>
+
+            	<dt>void getDate(void)</dt>
+            	<dd>Will get the current date on the operating system and display it to the user. Does not take any parameters or return any values.</dd>
+
+            	<dt>void setTime(void)</dt>
+            	<dd>Takes in three different user inputs, one to represent the hours, one to represent the minutes and one to represent the seconds. The user will recieve three different prompts for each of the three inputs. Afterwards the operating systems clock is updated to reflect the new time that was passed in by the user and that new time is displayed to the user. Does not take any parameters or return any values.</dd>
+           	 
+            	<dt>void setDate(void)</dt>
+            	<dd>Takes in three different user inputs, one to represent the month, one to represent the day and one to represent the year. The user will recieve three different prompts for each of the three inputs. Afterwards the operating systems clock is updated to reflect the new date that was passed in by the user and that new date is displayed to the user. Does not take any parameters or return any values.</dd>
+           	 
+            	<dt>void reverse(char str[], int length)</dt>
+            	<dd>Takes in two parameters, one for the string to be flipped and one that stores the length of the string. This is a helper method that serves the purpose of flipping a string around in reverse order based on the character. This method doesn't return any values.</dd>
+           	 
+            	<dt>char* itoa(int num, char* str, int base)</dt>
+            	<dd>Takes in three parameters, one for the number to be converted, one for the string where the integer is saved to and one for the base of the number that is passed in (Ex. base 10 is standard). This method works by going through and converting an integer to to a string and then returning that integer as a string pointer back to wherever called this method.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+   	 
+    	<!-- PCB User -->
+    	<section id="pcbuser">
+        	<h2>PCB User</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>void create_pcb(void)</dt>
+            	<dd>Takes in no parameters when the method is called. The method works by running through three different while loops that break out once the provided user input is valid. The first loop first takes in a name for a PCB from the user and checks to see if the name is either too long (longer than 10 chars) or already in use, if so the loop will skip to the next iteration and reprompt, if not it will keep the saved user input and break out of the loop. Then in the second loop it takes in a class input from the user and checks to see if that value is either 0 or 1 (user or system class). If the input is proper it will break out of the loop and if not it will skip to the next iteration of the loop and reprompt. Finally in the priority loop the user is prompted for the priority associated with the PCB. The code checks that the priority is in the valid range of 0 to 9 and if so it will break out of the loop, if not it will repeat and ask again. After each of these loops run and get the needed information from the user the method calls the pcb_setup and pcb_insert commands to actually create the PCB and add it to the required queue.</dd>
+
+            	<dt>void delete_pcb(void)</dt>
+            	<dd>Takes in no parameters when the method is called. The method works by asking the user to input a name from there it checks to see whether or not that name is a PCB that is being stored by calling the pcb_find method. I then checks to see if the class of that PCB (if it exists) is a system process and if either of those things fail out (i.e. if name isn't a PCB or the class is a system process) it will return an error. Otherwise it will then call the pcb_remove function to remove the PCB.</dd>
+
+            	<dt>void block_pcb(void)</dt>
+            	<dd>Takes in no parameters, it works by asking for the PCB name from the user. It does a check to see if the PCB exists by running the pcb_find method, and if the PCB isn't found it will return an print an error. Otherwise we know it exists and the PCB is removed from it's current queue and the state is switched to blocked (1) and then it is readded to the appropriate queue.</dd>
+           	 
+            	<dt>void unblock_pcb(void)</dt>
+            	<dd>Takes in no parameters, it works by asking for the PCB name from the user. It does a check to see if the PCB exists by running the pcb_find method, and if the PCB isn't found it will return an print an error. Otherwise we know it exists and the PCB is removed from it's current queue and the state is switched to unblocked/ready (0) and then it is readded to the appropriate queue.</dd>
+           	 
+            	<dt>void suspend_pcb(char str[], int length)</dt>
+            	<dd>Takes in no parameters, it works by asking for the PCB name from the user. It does a check to see if the PCB exists by running the pcb_find method, and if the PCB isn't found it will return an print an error. It then checks if the PCB is a system process and if it is it will return and print an error. Otherwise we know it exists and the PCB is removed from it's current queue and the state is switched to suspended and then it is readded to the appropriate queue.</dd>
+
+            	<dt>void resume_pcb(void)</dt>
+            	<dd> Takes in no parameters, it works by asking for the PCB name they wish to resume. Checks if the name exists in the structure, if not found it will output an error message. Then checks if the process is already in the not suspended state. If it is there is no need to change it and a message will be shown. If it does exist and suspened then it will change the state to not suspened and Re-inserts the PCB to the appropriate queue. </dd>
+
+            	<dt>void set_priority(void)</dt>
+            	<dd> Takes in no parameters, prompts the user for the pcb name. Then does an error check to see if the name exists comparing pcb_find(name) to NULL. If does not exist, outputs an error message. If it does find the pcb then it prompts the user for the new priority level. Converts the input to an integer using atoi() then updates the priority. Calls pcb_insert to insert the pcb back into the queue based on its updated priority. Outputs success message.  </dd>
+
+            	<dt>void show_pcb(void)</dt>
+            	<dd> Takes in no parameters, promtps the user for the pcb name, checks for existence of the pcb. If it does not exist, an output message will be thrown. If if does exist each characteristic (class, exec_state, priority, suspension) are converted to strings via a built in strcpy function.  Ouputs this message with a formatted print f statement (sprintf()) that we built in.  </dd>
+
+            	<dt>void show_ready(void)</dt>
+            	<dd>Takes in no parameters. Defines the ReadyQueue and first checks if there are actually any process in the ready queue. If not then an output message is thrown. If the queue has pcbs in it, it will loop through it with a while loop calling a helper function display_pcb at each pcb. </dd>
+
+            	<dt>void show_blocked(void)</dt>
+            	<dd> Takes in no parameters. Defined the BlockedQueue and first checksif there are actually any processes in the blocked queue. If not then an output message is thrown. If the queue has pcbs in it, it will loop through it with a while loop calling a helper function display_pcb at each pcb. </dd>
+
+            	<dt>void display_pcb(void)</dt>
+            	<dd> Takes in 1 parameter . Initializes the class string, execution state string, priority string, suspension strings. Formats each characteristic for easy output. Outputs them as a group using a built in formatted print function called sprintf.  </dd>
+       	 
+            	<dt>void show_all(void)</dt>
+            	<dd>Shows all pcbs by calling show_ready() and show_blocked(). Show_ready displays the ready processes and show_blocked displays the blocked processes. Combined together they cover all processes. </dd>
+           	 
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+
+    	<!-- sys_call_isr.s -->
+    	<section id="sys_call_is">
+       	 
+
+
+     	<!-- load r3 -->
+    	<section id="loadR3">
+    	<h2>Load R3</h2>
+    	<dd> Customizable names and priorites for process that needs loaded. New context struct is defined and registers are initilized for the new context, uses pcb header and the context struct </dd>
+    	</section>
+
+    	<!-- sys call -->
+    	<section id="syscall" >
+        	<h2>Sys Call</h2>
+        	<dt>syscall.c file</dt>
+        	<dd>There are 4 helper function prototypes defined. There are two global variables that are defined at the top that represent the current executing process and the intial context representing the 1st time the file is entered checks gen purpose register of the context containing operation code. There are two main cases, represented and executed with a switch statement. The cases are IDLE or EXIT. If neither of these cases exist -1 is returne. The IDLE case checks for ready, non suspended pcbs in the queue. If this exists it stores the selected pcb in a temp variable using a helper function called select_next_process(). The stack pointer is updated with save_context(ctx). This makes sure the current pcb exists and if so returns the stack pointer. The alternate case is EXIT (1). It functions as follows.. It frees the memory associated with the recently deleted pcb. Then the first ready, non suspended pcb is loaded. In case of an empty queue, it will load the original context </dd>
+       	 
+        	<dt> sys_call_isr (Assembly Code)
+        	<dd>Pushes the general purpose registers and segment registers onto the stack in the oposite order they are defined in the context struct. Pushes esp onto the stack and then calls the sys_call function, then eax gen register get stored in esp. The registers are then popped is the opposite order they are pushed iret called to return isr.</dd>
+    	</section>
+    	</section>
+   	 
+    	<!-- Serial IO -->
+    	<section id="serial-io">
+        	<h2>Serial IO</h2>
+        	<h3>Functions</h3>
+        	<dl>
+            	<dt>int serial_open(device dev, int baud_rate)</dt>
+            	<dd>This method works by first checking to see if there is a current device. If there is it then checks to see if the status of the port of the device is already open, if so the method returns -103 signaling that the port was already open. Next it checks if the event flag is already triggered and if so it returns -101 signaling that some event is already in progress. If both of those dont trigger it finally checks if the baud_rate (or speed) is a positive number and if it isn't it returns -102 signaling its invalid. After this a new dcb is created and filled with values. Once that is done the baud rate is set by calculating and setting the divisor of the specified baud rate. From there interrupts are enabled and the Modem control register and interrupt enable register are set. After this the function returns 0 indicating it was successful.</dd>
+           	 
+            	<dt>int serial_close(device dev)</dt>
+            	<dd>This method works by first checking the port that is trying to be closed and makes sure that it is open and not already closed. If this isn't the case and the port isn't open an error code of -201 is returned to the user signaling they tried to close an already closed port. If it gets past this check, the port is set to closed and the memory in the ring buffer gets freed. After this interrups get disables while it reads the current interupt mask and then reenables interupts. From here the modem control register and interrupt enable register are both cleared and a status code of 0 is returned indicating that this process was successful.</dd>
+           	 
+            	<dt>int serial_read(device dev, char *buf, size_t len)</dt>
+            	<dd>The way this method works is by first checking the state of the dcb. First making sure that the port is open and if it isn't an error code of -301 is returned. The buffer is then checked to make sure that it isn't null (empty) and if it is an error code of -302 is returned. Next if the length is 0 an error code of -303 is returned. Finally the device is checked to make sure it isn't already busy doing a read or write operation and if that is the case where it is doing something else an error code of -304 is returned. After this the device operation is set to read and data is read in from the ring buffer, stopping on a newline or at the end of the data. After this it checks to see if more data needs to be read and if so it sets the IOCB so it continues reading. However if the buffer is full it sets the current operation to idle and the event flag is triggered and the number of bytes read is returned.</dd>
+           	 
+            	<dt>int serial_write(device dev, char *buf, size_t len)</dt>
+            	<dd>The way this method works starts of very similar to the serial_read method above. The same checks are made but the error codes given back to the user are different. Firstly the port not being open gives an error code of -401 in this method. The buffer being empty gives an error code back to the user of -402. Next if there is an invalid length the error code of -403 gets returned. Finally the error code if the device is already doing some operation is -404. After this the current device has parameters set for the event flag (to 0 or not done) the ring buffer, buffer size, start and ending bit and the operation is set to write. From there the first character is written and the IER has a bit set to enable the transmit data interrupt. From there a status is returned of 0 signaling this method was successful.</dd>
+           	 
+            	<dt>void serial_interrupt(void)</dt>
+            	<dd>This method works by first disabling interrupts and then obtaining the current dcb that is being used. From there it checks if the current dcb is empty or if the port is closed. If it is the case then it reads a value in from the IIR of the specified device. The method then reads in the interrupt ID in order to determine what type of interrupt it is. From there it checks what type of interrupt it is and if the bit corresponds to 1 it calls the serial_input_interrupt function and if it's 0 it calls the serial_output_interupt function. After this call it acknowledges the interupt and finishes by reenabling interrupts to continue.</dd>
+           	 
+            	<dt>void serial_input_interrupt(struct dcb *dcb)</dt>
+            	<dd>This function works by first taking in a single input character that is passed in from the device dev which we get from the dcb passed in the function. It then checks to make sure we are handling a non-read operation to make sure we can write to the buffer and if so it then checks to make sure that we can store the character in the buffer. If it can the character is stored in the ring buffer. If the operation is read, the IOCB buffer is set to point to the recieved character and if that character is a carraige return it returns back. If it isn't a carraige return the DCB operation is set to IDLE and the event flag is signaled and then the method returns.</dd>
+           	 
+            	<dt>void serial_output_interrupt(struct dcb *dcb)</dt>
+            	<dd>In this function the first check is to make sure that the dcb is not in a write operation and if it isn't the method returns without doing anything else. Otherwise the operation is then set to IDLE and the event flag is triggered. The method then reads in a value from the IER of the dcb that was specified. After this is done the method returns.</dd>
+           	 
+            	<dt>struct dcb* get_device(void)</dt>
+            	<dd>This method is very simple and just returns the current device.</dd>
+        	</dl>
+        	<h3>Data Types</h3>
+        	<p>No custom data types are used.</p>
+    	</section>
+   	 
+	</div>
+</div>
+
+<div class="footer">
+	<p>For additional questions, please refer to the source code or contact the development team.</p>
+</div>
+</body>
+</html>
+

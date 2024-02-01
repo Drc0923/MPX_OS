@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MPX OS - User's Manual</title>
+    <link rel="stylesheet" type="text/css" href="manual.css">
+</head>
+<body>
+<div class="header">
+    <h1>MPX Operating System</h1>
+    <h2>User's Manual</h2>
+</div>
+
+<div class="container">
+    <div class="sidebar">
+        <h2>Table of Contents</h2>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#commands">Commands</a></li>
+            <li><a href="#shutdown">Shutdown</a></li>
+            <li><a href="#clear">Clear</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <!-- Introduction -->
+        <section id="introduction">
+            <h2>Introduction</h2>
+            <p>Welcome to the MPX Operating System User's Manual. This guide will help you understand how to use the MPX OS by explaining each command in a simple and straightforward manner. The User Interface works as follows. The main menu has 4 main options that a user can get to: Help which shows all commands, Time/Date Functions which includes all functions centered around the Time/Date as described below (Module 2), PCB functions which include any functions centered around manipulating PCBs as described below (Module 3), and finally the Version which shows the current version of this OS.</p>
+        </section>
+
+        <!-- Commands -->
+        <section id="commands">
+            <h2>Commands</h2>
+            <h3>Help</h3>
+            <p>Displays a list of all available commands and a brief description of each.</p>
+            
+            <h3>Version</h3>
+            <p>Displays the current version of the MPX Operating System.</p>
+            
+            <h3>Alarm</h3>
+            <p>Sets an alarm on the system for a time given by the user.</p>
+            <p>First user will be prompted to enter the hours (Ex. 03).</p>
+	    <p>Then user will be prompted to enter the minutes (Ex. 47).</p>
+	    <p>Finally user will be prompted to enter the seconds (Ex. 50).</p>
+	    <p>An alarm will then be set for that time and will display the message then.</p>
+            
+            <h3><u>Time/Date Functions</u></h3>
+            <h3>Set Time</h3>
+            <p>Sets the system time. Follow the prompts to enter the time.</p>
+            <p>First user will be prompted to enter the hours (Ex. 03).</p>
+	    <p>Then user will be prompted to enter the minutes (Ex. 47).</p>
+	    <p>Finally user will be prompted to enter the seconds (Ex. 50).</p>
+
+            <h3>Get Time</h3>
+            <p>Displays the current system time.</p>
+
+            <h3>Set Date</h3>
+            <p>Sets the system date. Follow the prompts to enter the date.</p>
+            <p>First user will be prompted to enter the month (Ex. 05).</p>
+	    <p>Then user will be prompted to enter the day (Ex. 29).</p>
+            <p>Finally user will be prompted to enter the year (Ex. 03).</p>
+
+            <h3>Get Date</h3>
+            <p>Displays the current system date.</p>
+            
+            <h3><u>PCB Functions</u></h3>
+            <h3>Load R3</h3>
+            <p>This method loads in the processes found in the source code under processes.h. Once this is done the processes are loaded and queued into a ready state. The context will be saved for each process loaded this way.</p>
+            
+            <h3>Delete PCB</h3>
+            <p>This function takes in user input of the name of a PCB to be deleted. The name must be one that exists as a PCB in memory to work properly (elsewise the function will return to the menu screen). Once a valid name is provided the PCB named will be deleted.</p>
+            
+            <h3>Block PCB</h3>
+            <p>This function takes in a user input of a name of a PCB to be moved to the blocked state. The name entered must be one that corresponds to a PCB that is currently being stored in memory. The PCB specified must also not be a system process for this to work and it must not already be in the blocked state. If these conditions are true the PCB will be moved from the ready queue into the blocked queue.</p>
+            
+            <h3>Unblock PCB</h3>
+            <p>This function takes in a user input of a name of a PCB to be moved to the unblocked/ready state. The name entered must be one that corresponds to a PCB that is currently being stored in memory. It also must not already be in the unblocked/ready state, if both of those conditions are true the PCB will be moved from the ready queue into the blocked queue.</p>
+            
+            <h3>Suspend PCB</h3>
+            <p>This function takes in a user input of a name of a PCB to be moved to a suspended state. The name entered must be one that corresponds to a PCB that is currently being stored in memory. The PCB specified must also not be a system process for this to work. If both of those conditions are true the PCB will be moved from into the suspended state.</p>
+            
+            <h3>Resume PCB</h3>
+            <p>This function takes in a user input of a name of a PCB to be moved out of the suspended state. The name entered must be one that corresponds to a PCB that is currently being stored in memory. The PCB specified must also be in the suspended state. If both of those conditions are true the PCB will be moved out of the suspended state.</p>
+
+            <h3>Set Priority</h3>
+            <p>This function takes in a user input of a name and a priority value to change the priority of an already created PCB. The name entered must be one that corresponds to a PCB that is currently being stored in memory. The priority entered must also be a valid priority value of between 0 and 9. If both of those conditions are true the PCB will be updated to represent the new priority given by the user.</p>
+            
+            <h3>Show PCB</h3>
+            <p>This function takes in a user input of a name of a PCB to be displayed. The name entered must be one that corresponds to a PCB that is currently being stored in memory. The PCB specified must will be displayed to the user along with its attributes.</p>
+            
+            <h3>Show Ready</h3>
+            <p>This function takes in no user input. It will go through the ready queue and display to the user all of the current PCBs stored in the ready queue.</p>
+            
+            <h3>Show Blocked</h3>
+            <p>This function takes in no user input. It will go through the blocked queue and display to the user all of the current PCBs stored in the blocked queue.</p>
+            
+            <h3>Show All</h3>
+            <p>This function takes in no user input. It will go through the ready queue and the blocked queue and display to the user all of the current PCBs stored in the ready and blocked queues.</p>
+        </section>
+
+        <!-- Shutdown -->
+        <section id="shutdown">
+            <h2>Shutdown</h2>
+            <p>To safely shut down the MPX Operating System, type the word "shutdown". You will be asked to confirm your choice. Type 'y' to confirm and proceed with the shutdown. 'n' will cancel the shutdown process</p>
+        </section>
+        
+        <!-- Clear -->
+        <section id="clear">
+            <h2>Clear</h2>
+            <p>In order to clear the terminal and redisplay the menu, type the word "clear". This action will wipe all the text previously in the terminal and redisplay the menu.</p>
+        </section>
+    </div>
+</div>
+
+<div class="footer">
+    <p>If you have further questions, please consult the Programmer's Manual or contact the Development team.</p>
+</div>
+</body>
+</html>
